@@ -14,5 +14,7 @@ public interface BillGenrateRepository {
 	public List<String> getAllBills();
 	public List<Map<String, String>> getBillsByCustomerName(String name);
 	
+	List<String> saveAll(Map<String, String> map);
+	
 	
 }
