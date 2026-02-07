@@ -19,6 +19,7 @@ import ascentAgency.Repo.BillGenrateRepository;
 public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 
 	@Autowired SaveBillImformation saveBill;
+	
 	@Override
 	public String saveBill(String link) {
 		String string = Stream.of(link)
@@ -27,7 +28,13 @@ public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 							saveBill.billList.put(bill, e);
 							return e;
 						}).findFirst().get();
+		System.out.println("all bill is ; "+saveBill.billList);
 		return string;
+	}
+	@Override
+	public List<String> saveAll(Map<String, String> map) {
+		saveBill.billList.putAll(map);
+		return saveBill.billList.values().stream().toList();
 	}
 
 	@Override

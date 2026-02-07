@@ -17,6 +17,10 @@ public class BillGenrateService {
 		// TODO Auto-generated method stub
 		return billGRepo.saveBill(value);
 	}
+	public List<String> saveAllBill(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return billGRepo.saveAll(map);
+	}
 
 	public List<String> getAllBills() {
 		// TODO Auto-generated method stub
