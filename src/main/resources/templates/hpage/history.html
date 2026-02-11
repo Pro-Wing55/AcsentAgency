@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Stock Usage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --primary: #2563eb;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #1e40af);
+            color: #fff;
+            padding: 18px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        .entry {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .date {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .brand {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .item {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .item-name {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            text-transform: capitalize;
+        }
+
+        .use {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .remain {
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .low {
+            color: var(--danger);
+        }
+
+        .ok {
+            color: var(--success);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            padding: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Stock Usage History</h1>
+    </header>
+
+    <div class="container" id="app">
+
+    </div>
+
+    <footer>
+        © 2026 Business Stock System
+    </footer>
+
+    <script>
+
+        const ho = window.location.protocol;
+        const host = window.location.host;
+        const host_Api = ho + "//" + host;
+
+        fetch(`${host_Api}/api/stock/allord`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched history data:", data);
+                renderHistory(data);
+            })
+            .catch(error => console.error('Error fetching history data:', error));
+
+
+
+
+
+        function renderHistory(data) {
+            const app = document.getElementById("app");
+
+            for (const [date, entry] of Object.entries(data)) {
+
+                const entryDiv = document.createElement("div");
+                entryDiv.className = "entry";
+
+                entryDiv.innerHTML = `
+            <div class="entry-header">
+                <div class="date">${date}</div>
+                <div class="brand">Brand: ${entry.bname}</div>
+            </div>
+            <div class="grid"></div>
+        `;
+
+                const grid = entryDiv.querySelector(".grid");
+
+                for (const [key, value] of Object.entries(entry)) {
+                    if (key === "bname" || !key.endsWith("_use")) continue;
+
+                    const base = key.replace("_use", "");
+                    const remain = entry[base + "_remain"];
+
+                    const remainClass = remain < 5 ? "low" : "ok";
+
+                    grid.innerHTML += `
+                <div class="item">
+                    <div class="item-name">${base}</div>
+                    <div class="use">Used: ${value.toFixed(2)}</div>
+                    <div class="remain ${remainClass}">
+                        Remaining: ${remain.toFixed(2)}
+                    </div>
+                </div>
+            `;
+
+                }
+
+                app.appendChild(entryDiv);
+            }
+
+
+        }
+
+    </script>
+
+</body>
+
+</html>

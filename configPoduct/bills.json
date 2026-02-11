@@ -1,0 +1,29 @@
+{
+  "101" : {
+    "bill" : "101",
+    "date" : "2026-01-30",
+    "to" : "Kartik_Hospital_Chinchwad",
+    "tp" :6090,
+    "LiquidSoup" : "12",
+    "GarbageBags" : "30",
+    "HandWash5L" : "2",
+    "view" : "https://actshopmoney.netlify.app/text/AscentClean/invice.html?bill=101&date=2026-01-30&to=Kartik_Hospital_Chinchwad&12_LiquidSoup=190&30_GarbageBags=95&2_HandWash5L=480"
+  },
+  "102" : {
+    "bill" : "102",
+    "date" : "2026-01-30",
+    "to" : "Kartik_Hospital_Pradhikarn",
+    "tp":1050,
+    "LiquidSoup" : "3",
+    "HandWash5L" : "1",
+    "view" : "https://actshopmoney.netlify.app/text/AscentClean/invice.html?bill=102&date=2026-01-30&to=Kartik_Hospital_Pradhikarn&3_LiquidSoup=190&1_HandWash5L=480"
+  },
+  "103" : {
+    "bill" : "103",
+    "date" : "2026-02-01",
+    "to" : "Rk_industry",
+     "tp":3450,
+    "LiquidSoup" : "30",
+    "view" : "https://actshopmoney.netlify.app/text/AscentClean/invice.html?bill=103&date=2026-02-01&to=Rk_industry&30_LiquidSoup=115"
+  }
+}

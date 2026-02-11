@@ -1,5 +1,9 @@
 package ascentAgency.Repo.Impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +14,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ascentAgency.Data.SaveBillImformation;
 import ascentAgency.Repo.BillGenrateRepository;
@@ -20,14 +30,34 @@ public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 
 	@Autowired SaveBillImformation saveBill;
 	
+   static	Map<String, String> map = new HashMap<>();
+  static {
+	  map.put("LiquidSoup", "liq");
+	  map.put("ToiletBowlCleaner", "tol");
+	  map.put("HandWash5L", "han");
+	  
+	  map.put("GarbageBags", "gar"); //garbage bag gar
+	  map.put("ColourPhenyl", "cph");// colour phenyl is cph
+	  
+  }
+	
 	@Override
 	public String saveBill(String link) {
+		//https://actshopmoney.netlify.app/text/AscentClean/invice.html?bill=123&date=2026-02-11&to=Rk_industry&1_LiquidSoup=111
 		String string = Stream.of(link)
 						.map(e->{
 							String bill=e.split("invice.html?")[1].split("&")[0].split("=")[1];
 							saveBill.billList.put(bill, e);
+							try {
+								saveBill2(bill,link);
+							} catch (URISyntaxException | IOException e1) {
+								
+								e1.printStackTrace();
+							}
 							return e;
 						}).findFirst().get();
+		
+		System.out.println("this bill is  ; "+string);
 		System.out.println("all bill is ; "+saveBill.billList);
 		return string;
 	}
@@ -54,9 +84,13 @@ public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 	}
 
 	@Override
-	public List<String> getAllBills() {
-		// 
-		return saveBill.billList.values().stream().toList();
+	public JsonNode getAllBills() throws IOException {
+		final ObjectMapper objectMapper = new ObjectMapper();
+    	PathMatchingResourcePatternResolver resolver =  new PathMatchingResourcePatternResolver();
+		 File bills= resolver.getResource("file:configPoduct/bills.json").getFile();
+		 JsonNode tree = objectMapper.readTree(bills);
+		
+		return tree;
 	}
 
 	@Override
@@ -92,5 +126,93 @@ public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 	}
 
 	
+	private JsonNode saveBill2(String billNo,String url) throws URISyntaxException, IOException {
+		final ObjectMapper objectMapper = new ObjectMapper();
+    	PathMatchingResourcePatternResolver resolver =  new PathMatchingResourcePatternResolver();
+		URI uri = new URI(url);
+	    String query = uri.getQuery();  // get only part after ?
+
+	    File bills= resolver.getResource("file:configPoduct/bills.json").getFile();
+	    ObjectNode  rootNode  =(ObjectNode ) objectMapper.readTree(bills);
+	    
+	    ObjectNode obn = objectMapper.createObjectNode();
+
+	    
+	    String[] pairs = query.split("&");
+
+	    for (String pair : pairs) {
+	        String[] keyValue = pair.split("=");
+	        String key = keyValue[0];
+	        String value = keyValue[1];
+	        
+	        if(key.equalsIgnoreCase("bill") 
+	        	|| key.equalsIgnoreCase("date") 
+	        	|| key.equalsIgnoreCase("to")
+	        	|| key.equalsIgnoreCase("tp")) {
+	        	
+	        	obn.put(key, value);
+	        	
+	        }
+	        else {
+//	        	1_LiquidSoup
+	        	String k= key.split("_")[1];
+	        	String v= key.split("_")[0];
+	        	
+	        	stockUpdateByNameAndQnt(k,Integer.parseInt(v));
+	        	
+	        	obn.put(k, v);
+	        }
+	        
+	    }
+	    obn.put("view", url);
+	    
+	    // Add node to root JSON
+        rootNode.set(billNo, obn);
+        
+     // Write back to file
+        objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValue(bills, rootNode);
+        
+        System.out.println("rootNode is : "+rootNode);
+	  
+		return rootNode;
+	}
+	
+	
+	private String stockUpdateByNameAndQnt( String name ,int qnt) throws IOException{
+		final ObjectMapper objectMapper = new ObjectMapper();
+	 	PathMatchingResourcePatternResolver resolver =  new PathMatchingResourcePatternResolver();
+	 	
+	   	File stock= resolver.getResource("file:configPoduct/stock.json").getFile();
+	   	
+	   	ObjectNode  st = (ObjectNode )objectMapper.readTree(stock);
+	   
+	   	if(name.equalsIgnoreCase("ToiletBowlCleaner")) {
+      	  st.put("toiletCliner", st.get("toiletCliner").asDouble()-(qnt*5));
+      	  st.put("cans", st.get("cans").asDouble()-qnt)	;
+        }
+	   	else if(name.equalsIgnoreCase("LiquidSoup")) {
+	      	  st.put("liquid_soup", st.get("liquid_soup").asDouble()-(qnt*5));
+	      	  st.put("cans", st.get("cans").asDouble()-qnt)	;
+	        }
+		else if(name.equalsIgnoreCase("HandWash5L")) {
+	      	  st.put("handwash", st.get("handwash").asDouble()-(qnt*5));
+	      	  st.put("cans", st.get("cans").asDouble()-qnt)	;
+	        }
+		else if(name.equalsIgnoreCase("ColourPhenyl")) {
+	      	  st.put("colour_Phenyl", st.get("colour_Phenyl").asDouble()-(qnt*5));
+	        }
+		else if(name.equalsIgnoreCase("GarbageBags")) {
+	      	  st.put("liquid_soup", st.get("liquid_soup").asDouble()-(qnt*5));
+	        }
+	   	
+	   	
+	    // update back to Stock file
+        objectMapper.writerWithDefaultPrettyPrinter()
+       .writeValue(stock, st);
+		
+		return "update";
+		
+	}
 	
 }

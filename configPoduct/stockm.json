@@ -1,0 +1,56 @@
+{
+  "5-2-2026" : {
+    "bname" : "liq85",
+    "soda_use" : 0.7,
+    "soda_remain" : 0,
+    "slurry_use" : 3.5,
+    "slurry_remain" : 0,
+    "sles_use" : 0.7,
+    "sles_remain" : 0,
+    "salt_use" : 1.4,
+    "salt_remain" : 0
+  },
+  "7-2-2026" : {
+    "bname" : "liq496",
+    "soda_use" : 4.0,
+    "soda_remain" : 31.0,
+    "slurry_use" : 20.0,
+    "slurry_remain" : 15.0,
+    "sles_use" : 4.0,
+    "sles_remain" : 46.0,
+    "salt_use" : 8.0,
+    "salt_remain" : 12
+  },
+  "7-2-2026 17:30:18" : {
+    "bname" : "tol66",
+    "slurry_use" : 4.05,
+    "slurry_remain" : 10.95,
+    "acid_use" : 2.6,
+    "acid_remain" : 32.4
+  },
+  "7-2-2026 17:33:27" : {
+    "bname" : "tol66",
+    "slurry_use" : 4.05,
+    "slurry_remain" : 6.8999999999999995,
+    "acid_use" : 2.6,
+    "acid_remain" : 29.799999999999997
+  },
+  "7-2-2026 18:24:48" : {
+    "bname" : "tol90",
+    "slurry_use" : 5.4,
+    "slurry_remain" : 1.4999999999999991,
+    "acid_use" : 3.5,
+    "acid_remain" : 26.299999999999997
+  },
+  "7-2-2026 22:18:03" : {
+    "bname" : "liq85",
+    "soda_use" : 0.7,
+    "soda_remain" : 30.3,
+    "slurry_use" : 3.5,
+    "slurry_remain" : -2.000000000000001,
+    "sles_use" : 0.7,
+    "sles_remain" : 45.3,
+    "salt_use" : 1.4,
+    "salt_remain" : 10.6
+  }
+}

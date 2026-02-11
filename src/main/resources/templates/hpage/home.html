@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Business Stock Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #1e40af);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            margin: 6px 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .label {
+            font-size: 24px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .unit {
+            font-size: 14px;
+            margin-left: 4px;
+            color: var(--muted);
+        }
+
+        .low {
+            color: var(--danger);
+        }
+
+        .ok {
+            color: var(--success);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* --------------------------------------- */
+        .batch-bar {
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .batch-bar button.secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        .batch-bar button.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .batch-bar select,
+        .batch-bar button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            border: none;
+        }
+
+        .batch-bar select {
+            min-width: 160px;
+        }
+
+        .batch-bar button {
+            background: #ffffff;
+            color: #1e40af;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .batch-bar button:hover {
+            background: #e0e7ff;
+        }
+        #addStock{
+         background: #e0e7ff;
+            font-size: large;
+		    margin-top: -8px;
+		    margin-left: 400px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Stock Management</h1>  <button id="addStock">add Stock</button>
+        <p>Current Inventory Status</p>
+
+        <div class="batch-bar">
+            <select id="batchSelect">
+                <option value="">Select Batch</option>
+                <option value="liq85">liq85</option>
+                <option value="liq496">liq496</option>
+                <option value="tol66">tol66</option>
+                <option value="tol90">tol90</option>
+            </select>
+
+            <button id="generateBtn">Generate New Batch</button>
+            <button id="historyBtn" class="secondary">View History</button>
+             <button id="viewsBills" class="secondary">View Bills</button>
+            
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="grid" id="grid">
+
+        </div>
+
+
+    </div>
+
+    <footer>
+        © 2026 Your Business Name · Stock Dashboard
+    </footer>
+
+
+    <!-- <script th:src="@{script/admin_man.js}">
+
+  </script> -->
+    <script>
+
+    const ho = window.location.protocol;
+    const host = window.location.host;
+    const host_Api = ho + "//" + host;
+
+
+        function fetchData() {
+            fetch(host_Api + "/api/stock/viewAllStock")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("log------------", data)
+                    // document.querySelector(".card:nth-child(1) .value").innerHTML = data.cans + ' <span class="unit">pcs</span>';
+                    // document.querySelector(".card:nth-child(2) .value").innerHTML = data.water + ' <span class="unit">liters</span>';
+                    let grid = document.getElementById("grid");
+                    grid.innerHTML = '';
+                    let i = 1;
+                    let inhtml = "";
+                    for (const [key, value] of Object.entries(data)) {
+                        let formattedValue = value.toFixed(2);
+                        const isLow = Number(formattedValue) < 10;
+                        const valueClass = isLow ? "low" : "ok";
+                        inhtml += `<div class="card">
+                                <div class="label">${key}</div>
+                                <div class="value ${valueClass}">${formattedValue} <span class="unit">kg</span></div>
+                            </div>`;
+
+                    }
+                    grid.innerHTML = inhtml;
+
+                })
+                .catch(error => console.error('Error fetching stock data:', error));
+        }
+
+        fetchData();
+
+
+
+        document.getElementById("generateBtn").addEventListener("click", () => {
+            const batch = document.getElementById("batchSelect").value;
+
+            if (!batch) {
+                alert("Please select a batch");
+                return;
+            }
+            const responce = new Request(host_Api + `/api/stock/updOrAdd/${batch}`, {
+                method: "put",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json; charset=UTF-8'
+                }
+            })
+
+            fetch(responce)
+                .then(response => response.json())
+                .then(data => {
+                    alert("Batch updated successfully!");
+                    fetchData();
+                })
+
+            // window.location.href = `/api/stock/updOrAdd/${batch}`;
+        });
+
+        document.getElementById("historyBtn").addEventListener("click", () => {
+            window.location.href = "/history";
+        });
+        
+        document.getElementById("viewsBills").addEventListener("click", () => {
+            window.location.href = "/bills";
+        });
+        
+        document.getElementById("addStock").addEventListener("click", () => {
+        	window.location.href = "/updStock";
+        });
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AscentClean Billing Dashboard</title>
+   <!--  <link rel="stylesheet" href="css/dashboard.css"> -->
+    <link rel="stylesheet" th:href="@{/styles/bills.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>AscentClean Billing Dashboard</h1>
+
+    <!-- Summary Cards -->
+    <div class="summary">
+        <div class="card">
+            <h3>Total Bills</h3>
+            <p id="totalBills">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Customers</h3>
+            <p id="totalCustomers">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <p id="totalRevenue">₹0</p>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search Customer...">
+
+        <input type="date" id="dateFilter">
+
+        <select id="sortSelect">
+            <option value="asc">Sort A-Z</option>
+            <option value="desc">Sort Z-A</option>
+        </select>
+    </div>
+
+    <table id="billTable">
+        <thead>
+            <tr>
+                <th>Bill</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+
+<!-- <script src="js/dashboard.js"></script> -->
+  <script  th:src="@{scripts/bills.js}">
+   
+  </script>
+</body>
+</html>

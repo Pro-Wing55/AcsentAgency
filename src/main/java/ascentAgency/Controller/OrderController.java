@@ -1,5 +1,6 @@
 package ascentAgency.Controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import ascentAgency.service.BillGenrateService;
 
 @RestController
@@ -22,7 +25,7 @@ public class OrderController  {
 	
 	@Autowired BillGenrateService billService;
 	
-@PostMapping("savebill")
+@PostMapping("savebill") 
 public String savebill(@RequestHeader String url) {
 	System.out.println("this is Save  method "+url);
 	return billService.saveBill(url);
@@ -35,7 +38,7 @@ public List<String> saveAllbills(@RequestBody Map<String, String>  map) {
 }
 
 @GetMapping("getBills")
-public List<String> getAllbills() { 
+public JsonNode getAllbills() throws IOException { 
 	System.out.println("this is getAll method ");
 	return billService.getAllBills();
 }
@@ -45,6 +48,8 @@ public String getBillByInviceNo(@PathVariable Integer id ) {
 	
 	return billService.getBillsByInviceNo(id);
 }
+
+
 
 @GetMapping("getBillsByCostomerName/{name}")
 public List<Map<String, String>> getBillsByCustomerName(@PathVariable String name ) {
