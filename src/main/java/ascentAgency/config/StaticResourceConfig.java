@@ -17,6 +17,6 @@ public class StaticResourceConfig  implements WebMvcConfigurer {
 	    	System.out.println("addResourceHandlers method ------------------------------");
 	        registry
 	            .addResourceHandler("/json/**")
-	            .addResourceLocations("file:" + jsonBasePath + "/");
+	            .addResourceLocations("classpath:" + jsonBasePath + "/");
 	    }
 }
