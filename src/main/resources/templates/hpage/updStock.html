@@ -1,215 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Purchase Bill Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Bill Management</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-body{
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    padding:20px;
-}
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 20px;
+        }
 
-.container{
-    max-width:1100px;
-    margin:auto;
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.3);
-}
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-    color:#2c5364;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c5364;
+        }
 
-.form-section{
-    margin-bottom:30px;
-}
+        .form-section {
+            margin-bottom: 30px;
+        }
 
-.input-group{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-bottom:15px;
-}
+        .input-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
 
-input,select{
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    min-width:180px;
-}
+        input,
+        select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            min-width: 180px;
+        }
 
-button{
-    padding:10px 20px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
-}
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-.add-btn{
-    background:#2c5364;
-    color:white;
-}
+        .add-btn {
+            background: #2c5364;
+            color: white;
+        }
 
-.add-btn:hover{
-    background:#203a43;
-}
+        .add-btn:hover {
+            background: #203a43;
+        }
 
-.save-btn{
-    background:#28a745;
-    color:white;
-}
+        .save-btn {
+            background: #28a745;
+            color: white;
+        }
 
-.save-btn:hover{
-    background:#1e7e34;
-}
+        .save-btn:hover {
+            background: #1e7e34;
+        }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
 
-th,td{
-    padding:10px;
-    text-align:center;
-    border-bottom:1px solid #ddd;
-}
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
 
-th{
-    background:#2c5364;
-    color:white;
-}
+        th {
+            background: #2c5364;
+            color: white;
+        }
 
-tr:hover{
-    background:#f2f2f2;
-}
+        tr:hover {
+            background: #f2f2f2;
+        }
 
-.total-box{
-    text-align:right;
-    margin-top:10px;
-    font-size:18px;
-    font-weight:bold;
-    color:#2c5364;
-}
+        .total-box {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c5364;
+        }
 
-.history-section{
-    margin-top:40px;
-}
+        .history-section {
+            margin-top: 40px;
+        }
 
-@media(max-width:768px){
-    .input-group{
-        flex-direction:column;
-    }
-}
-</style>
+        @media(max-width:768px) {
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-<h1>Purchase Bill Management</h1>
+        <h1>Purchase Bill Management</h1>
 
-<!-- Purchase Form -->
-<div class="form-section">
-    <div class="input-group">
-        <input type="text" id="billNo" placeholder="Bill No">
-        <input type="text" id="supplier" placeholder="Supplier Name">
-        <input type="date" id="date">
+        <!-- Purchase Form -->
+        <div class="form-section">
+            <div class="input-group">
+                <input type="text" id="billNo" placeholder="Bill No">
+                <input type="text" id="supplier" placeholder="Supplier Name">
+                <input type="date" id="date">
+            </div>
+
+            <h3>Add Items</h3>
+            <div class="input-group">
+
+                <select id="itemName">
+                    <option value="">Select Item</option>
+                    <option value="cans">cans</option>
+                    <option value="GarbageBags">GarbageBags</option>
+                    <option value="colour_Phenyl">colour_Phenyl</option>
+                    <option value="water">water</option>
+                    <option value="soda">soda</option>
+                    <option value="slurry">slurry</option>
+                    <option value="sles">sles</option>
+                    <option value="salt">salt</option>
+                    <option value="acid">acid</option>
+                </select>
+
+                <input type="number" id="quantity" placeholder="Quantity" step="0.01">
+                <input type="number" id="price" placeholder="Price" step="0.01">
+
+                <button class="add-btn" onclick="addItem()">Add Item</button>
+            </div>
+
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="total-box">
+                Grand Total: ₹ <span id="grandTotal">0</span>
+            </div>
+
+            <button class="save-btn" onclick="saveBill()">Save Purchase Bill</button>
+        </div>
+
+        <!-- History Section -->
+        <div class="history-section">
+            <h2>Purchase History</h2>
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Bill No</th>
+                        <th>Supplier</th>
+                        <th>Date</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
 
-    <h3>Add Items</h3>
-    <div class="input-group">
-    
-    <select id="itemName">
-        <option value="">Select Item</option>
-        <option value="cans">cans</option>
-        <option value="GarbageBags">GarbageBags</option>
-        <option value="colour_Phenyl">colour_Phenyl</option>
-        <option value="water">water</option>
-        <option value="soda">soda</option>
-        <option value="slurry">slurry</option>
-        <option value="sles">sles</option>
-        <option value="salt">salt</option>
-        <option value="acid">acid</option>
-    </select>
+    <script>
 
-    <input type="number" id="quantity" placeholder="Quantity" step="0.01">
-    <input type="number" id="price" placeholder="Price" step="0.01">
+        const ho = window.location.protocol;
+        const hosting = window.location.host;
+        const host_Api = ho + "//" + hosting;
+        // const host_Api = "http://localhost:8086";
+        let grandTotal = 0;
+        let historyData = [];
+        let historyItom = [];
 
-    <button class="add-btn" onclick="addItem()">Add Item</button>
-</div>
+        function addItem() {
+            let item = document.getElementById("itemName").value;
+            let qty = parseFloat(document.getElementById("quantity").value);
+            let price = parseFloat(document.getElementById("price").value);
 
-    <table id="itemsTable">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+            if (!item || !qty || !price) {
+                alert("Please fill all item fields");
+                return;
+            }
 
-    <div class="total-box">
-        Grand Total: ₹ <span id="grandTotal">0</span>
-    </div>
+            let total = qty * price;
+            grandTotal += total;
 
-    <button class="save-btn" onclick="saveBill()">Save Purchase Bill</button>
-</div>
 
-<!-- History Section -->
-<div class="history-section">
-    <h2>Purchase History</h2>
-    <table id="historyTable">
-        <thead>
-            <tr>
-                <th>Bill No</th>
-                <th>Supplier</th>
-                <th>Date</th>
-                <th>Total Amount</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+            historyItom.push({
+                item, qty, price, total
+            })
 
-</div>
 
-<script>
 
-let grandTotal = 0;
-let historyData = [];
 
-function addItem(){
-    let item = document.getElementById("itemName").value;
-    let qty = parseFloat(document.getElementById("quantity").value);
-    let price = parseFloat(document.getElementById("price").value);
-
-    if(!item || !qty || !price){
-        alert("Please fill all item fields");
-        return;
-    }
-
-    let total = qty * price;
-    grandTotal += total;
-
-    document.querySelector("#itemsTable tbody").innerHTML += `
+            document.querySelector("#itemsTable tbody").innerHTML += `
         <tr>
             <td>${item}</td>
             <td>${qty}</td>
@@ -218,32 +235,39 @@ function addItem(){
         </tr>
     `;
 
-    document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+            document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
 
-    document.getElementById("itemName").value="";
-    document.getElementById("quantity").value="";
-    document.getElementById("price").value="";
-}
+            document.getElementById("itemName").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("price").value = "";
+        }
 
-function saveBill(){
+        function saveBill() {
 
-    let billNo = document.getElementById("billNo").value;
-    let supplier = document.getElementById("supplier").value;
-    let date = document.getElementById("date").value;
+            let billNo = document.getElementById("billNo").value;
+            let supplier = document.getElementById("supplier").value;
+            let date = document.getElementById("date").value;
 
-    if(!billNo || !supplier || !date){
-        alert("Fill Bill Details");
-        return;
-    }
+            if (!billNo || !supplier || !date) {
+                alert("Fill Bill Details");
+                return;
+            }
 
-    historyData.push({
-        billNo,
-        supplier,
-        date,
-        total: grandTotal
-    });
+            historyData.push({
+                billNo,
+                supplier,
+                date,
+                total: grandTotal
+            });
 
-    document.querySelector("#historyTable tbody").innerHTML += `
+            const bill = {
+                "billNo": billNo,
+                "supplier": supplier,
+                "date": date,
+                "total": grandTotal,
+                "items": historyItom   // 🔥 Attach items here
+            };
+            document.querySelector("#historyTable tbody").innerHTML += `
         <tr>
             <td>${billNo}</td>
             <td>${supplier}</td>
@@ -252,18 +276,42 @@ function saveBill(){
         </tr>
     `;
 
-    // Reset form
-    document.getElementById("billNo").value="";
-    document.getElementById("supplier").value="";
-    document.getElementById("date").value="";
-    document.querySelector("#itemsTable tbody").innerHTML="";
-    grandTotal=0;
-    document.getElementById("grandTotal").innerText="0";
 
-    alert("Purchase Bill Saved Successfully!");
-}
+            // data save to db with backend
+            let api = `${host_Api}/api/savePurchaseBill`;
 
-</script>
+
+            const request = new Request(api, {
+                method: "Post",
+                body: JSON.stringify(bill),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json; charset=UTF-8',
+                    // 'Access-Control-Allow-Origin':ACAO,
+                    // "url": tempUrl
+                }
+            });
+
+            fetch(request)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("response from server: " + data);
+                })
+
+            // Reset form
+            document.getElementById("billNo").value = "";
+            document.getElementById("supplier").value = "";
+            document.getElementById("date").value = "";
+            document.querySelector("#itemsTable tbody").innerHTML = "";
+            grandTotal = 0;
+            document.getElementById("grandTotal").innerText = "0";
+
+
+            alert("Purchase Bill Saved Successfully!");
+        }
+
+    </script>
 
 </body>
+
 </html>

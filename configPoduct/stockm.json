@@ -52,5 +52,33 @@
     "sles_remain" : 45.3,
     "salt_use" : 1.4,
     "salt_remain" : 10.6
+  },
+  "12-2-2026 12:11:16" : {
+    "bname" : "tol90",
+    "slurry_use" : 5.4,
+    "slurry_remain" : 29.6,
+    "acid_use" : 3.5,
+    "acid_remain" : 22.799999999999997
+  },
+  "12-2-2026 12:44:11" : {
+    "bname" : "tol90",
+    "slurry_use" : 5.4,
+    "slurry_remain" : 24.200000000000003,
+    "acid_use" : 3.5,
+    "acid_remain" : 19.299999999999997
+  },
+  "12-2-2026 12:47:04" : {
+    "bname" : "tol90",
+    "slurry_use" : 5.4,
+    "slurry_remain" : 18.800000000000004,
+    "acid_use" : 3.5,
+    "acid_remain" : 15.799999999999997
+  },
+  "12-2-2026 13:11:43" : {
+    "bname" : "tol90",
+    "slurry_use" : 5.4,
+    "slurry_remain" : 13.400000000000004,
+    "acid_use" : 3.5,
+    "acid_remain" : 12.299999999999997
   }
 }

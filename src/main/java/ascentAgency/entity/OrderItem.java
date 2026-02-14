@@ -1,7 +1,12 @@
 package ascentAgency.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+//@Entity
 public class OrderItem {
 	
+//	@Id
 	    private Long id;
 	    private String productName;
 	    private Double price;

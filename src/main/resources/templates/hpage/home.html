@@ -145,11 +145,12 @@
         .batch-bar button:hover {
             background: #e0e7ff;
         }
-        #addStock{
-         background: #e0e7ff;
+
+        #addStock {
+            background: #e0e7ff;
             font-size: large;
-		    margin-top: -8px;
-		    margin-left: 400px;
+            margin-top: -8px;
+            margin-left: 400px;
         }
     </style>
 </head>
@@ -157,9 +158,9 @@
 <body>
 
     <header>
-        <h1>Stock Management</h1>  <button id="addStock">add Stock</button>
+        <h1>Stock Management</h1> <button id="addStock">add Stock</button>
         <p>Current Inventory Status</p>
-
+        <button id="generateInvice">Generate Invice</button>
         <div class="batch-bar">
             <select id="batchSelect">
                 <option value="">Select Batch</option>
@@ -171,8 +172,8 @@
 
             <button id="generateBtn">Generate New Batch</button>
             <button id="historyBtn" class="secondary">View History</button>
-             <button id="viewsBills" class="secondary">View Bills</button>
-            
+            <button id="viewsBills" class="secondary">View Bills</button>
+
         </div>
     </header>
 
@@ -194,13 +195,13 @@
   </script> -->
     <script>
 
-    const ho = window.location.protocol;
-    const host = window.location.host;
-    const host_Api = ho + "//" + host;
+        const ho = window.location.protocol;
+        const host = window.location.host;
+        const host_Api = ho + "//" + host;
 
 
         function fetchData() {
-            fetch(host_Api + "/api/stock/viewAllStock")
+            fetch(host_Api + "/api/stock/viewAllStock1")
                 .then(response => response.json())
                 .then(data => {
                     console.log("log------------", data)
@@ -237,7 +238,7 @@
                 alert("Please select a batch");
                 return;
             }
-            const responce = new Request(host_Api + `/api/stock/updOrAdd/${batch}`, {
+            const responce = new Request(host_Api + `/api/stock/updOrAdd1/${batch}`, {
                 method: "put",
                 headers: {
                     'Accept': 'application/json',
@@ -258,13 +259,17 @@
         document.getElementById("historyBtn").addEventListener("click", () => {
             window.location.href = "/history";
         });
-        
+
         document.getElementById("viewsBills").addEventListener("click", () => {
             window.location.href = "/bills";
         });
-        
+
         document.getElementById("addStock").addEventListener("click", () => {
-        	window.location.href = "/updStock";
+            window.location.href = "/updStock";
+        });
+
+        document.getElementById("generateInvice").addEventListener("click", () => {
+            window.location.href = "https://actshopmoney.netlify.app/text/ascentclean/bill";
         });
 
     </script>

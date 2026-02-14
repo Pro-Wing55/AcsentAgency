@@ -1,14 +1,14 @@
 {
-  "liquid_soup" : -455.0,
-  "toiletCliner" : 110.0,
+  "liquid_soup" : 455.0,
+  "toiletCliner" : 470.0,
   "handwash" : 5.0,
-  "cans" : -29.0,
+  "cans" : 29.0,
   "GarbageBags" : 5000,
   "colour_Phenyl" : 80,
-  "water" : 4259.5,
+  "water" : 3939.5,
   "soda" : 30.3,
-  "slurry" : 35.0,
+  "slurry" : 13.400000000000004,
   "sles" : 45.3,
   "salt" : 10.6,
-  "acid" : 26.299999999999997
+  "acid" : 12.299999999999997
 }

@@ -2,14 +2,18 @@ package ascentAgency.Repo.Impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +28,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ascentAgency.Data.SaveBillImformation;
 import ascentAgency.Repo.BillGenrateRepository;
+import ascentAgency.Repo.InvoiceRepo;
+import ascentAgency.Repo.StockRepo;
+import ascentAgency.entity.Invoice;
+import ascentAgency.entity.InvoiceItem;
+import ascentAgency.entity.Stocks;
 
 @Service
 public class BillGenrateRepoIMPL  implements BillGenrateRepository{
@@ -49,7 +58,8 @@ public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 							String bill=e.split("invice.html?")[1].split("&")[0].split("=")[1];
 							saveBill.billList.put(bill, e);
 							try {
-								saveBill2(bill,link);
+//								saveBill2(bill,link); // this metho work Json file 
+								saveBill1(bill, link);// this method work onnly db oparation
 							} catch (URISyntaxException | IOException e1) {
 								
 								e1.printStackTrace();
@@ -213,6 +223,142 @@ public class BillGenrateRepoIMPL  implements BillGenrateRepository{
 		
 		return "update";
 		
+	}
+	
+	
+	
+	
+	
+	
+	/// this is use for dp Oparatation
+	@Autowired InvoiceRepo invoiceRepo;
+
+	@SuppressWarnings("deprecation")
+	public JsonNode getAllBills1() throws IOException {
+		final ObjectMapper objectMapper = new ObjectMapper();
+		ObjectNode mainNode = objectMapper.createObjectNode();
+		 
+	        List<Invoice> invoices = invoiceRepo.findAll();
+	        invoices.forEach(e ->{
+	        	ObjectNode node = objectMapper.createObjectNode();
+	        	
+	                node.put("bill", e.getBill());
+	                node.put("date", e.getDate().toString());
+	                node.put("to", e.getCustomerName());
+	                
+	                node.put("tp", e.getTotalPrice());
+	                node.put("view", e.getViewUrl());
+	                
+	                mainNode.set(e.getBill(), node);
+	               
+	          }  
+	        );
+	        
+	        return mainNode;
+	}
+	
+	
+	public ObjectNode saveBill1(String billNo,String url) throws URISyntaxException, IOException {
+		final ObjectMapper objectMapper = new ObjectMapper();
+    	PathMatchingResourcePatternResolver resolver =  new PathMatchingResourcePatternResolver();
+		URI uri = new URI(url);
+	    String query = uri.getQuery();  // get only part after ?
+	//ll=101&date=2026-01-30&to=Kartik_Hospital_Chinchwad&12_LiquidSoup=190&30_GarbageBags=95&2_HandWash5L=480
+	    
+	    
+	    
+	    String[] pairs = query.split("&");
+	    Invoice in= new Invoice();
+	    in.setViewUrl(url);
+	   List<InvoiceItem> itomes= new ArrayList<>();
+	   
+	    for (String pair : pairs) {
+	    	InvoiceItem it= new InvoiceItem();
+	        String[] keyValue = pair.split("=");
+	        String key = keyValue[0];
+	        String value = keyValue[1];
+	        
+	        if(key.equalsIgnoreCase("bill")){
+	        	in.setBill(value);
+	        }
+	        else if(key.equalsIgnoreCase("date")) {
+	        	in.setDate(LocalDate.parse(value));
+	        }		
+	        else if( key.equalsIgnoreCase("to")) {
+	        	in.setCustomerName(value);
+	        }
+	        else if( key.equalsIgnoreCase("tp")) {
+	        	in.setTotalPrice(Double.parseDouble(value)); 
+	        }
+	        else {
+//	        	1_LiquidSoup
+	        	String k= key.split("_")[1];
+	        	String v= key.split("_")[0];
+	        	
+	        	stockUpdateByNameAndQnt1(k,Integer.parseInt(v));
+	        	
+	        	it.setProductName(k);
+	        	it.setQuantity(Double.parseDouble(v));
+	        	
+	        	itomes.add(it);
+	        	it.setInvoice(in);
+	        	in.getItems().add(it);
+	        }
+	        
+	    }
+	    
+	   
+	    invoiceRepo.save(in);
+	  
+	    ObjectNode node = objectMapper.createObjectNode();
+        List<Stocks> stockList = stockRepo.findAll();
+        stockList.forEach(stock ->
+                node.put(stock.getItemName(), stock.getQuantity())
+        );
+        return node;
+	}
+	
+	@Autowired StockRepo stockRepo;
+	
+	private String stockUpdateByNameAndQnt1( String name ,int qnt) throws IOException{
+		final ObjectMapper objectMapper = new ObjectMapper();
+	 	PathMatchingResourcePatternResolver resolver =  new PathMatchingResourcePatternResolver();
+	 	
+	  
+	   	List<Stocks> all = stockRepo.findAll();
+	   	Optional<Stocks> first = all.stream().filter(e->{
+	   		if(e.getItemName().equalsIgnoreCase(name)) {
+	   			e.setQuantity(e.getQuantity()-(qnt*5));
+	   			System.out.println("-1---------------------------------------------------------------------");
+	   			updateCans( qnt);
+	   			stockRepo.save(e);
+	   			return true;
+	   		}
+	   		else {
+	   			return false;
+	   		}
+	   	}).findFirst();
+	   
+	   	
+		
+		return "update";
+		
+	}
+	
+	private String updateCans(double qnt) {
+		Stocks st = stockRepo.findByItemName("cans").get(0);
+		st.setQuantity(st.getQuantity()-qnt);
+		System.out.println("---2-------------------------------------------------------------------");
+		stockRepo.save(st);
+		return null;
+	}
+	
+	
+//	 this methodd is update or add purchase entry 
+	public Stocks update(String itemName, double qnt) {
+		Stocks st = stockRepo.findByItemName(itemName).get(0);
+		st.setQuantity(st.getQuantity()+qnt);
+		return stockRepo.save(st);
 	}
 	
 }

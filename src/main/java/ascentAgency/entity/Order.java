@@ -4,10 +4,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 
+//@Entity
 public class Order {
-
+//@Id
+//@GeneratedValue(strategy = GenerationType.AUTO)
 	    private Long id;
 	    private String customerName;
 	    private String mobile;
@@ -16,7 +24,7 @@ public class Order {
 	    private Double totalAmount;
 	    private LocalDateTime orderDate;
 	    
-	    
+	    @OneToMany
 	    private List<OrderItem> items = new ArrayList<>();
 
 	    public Order() {

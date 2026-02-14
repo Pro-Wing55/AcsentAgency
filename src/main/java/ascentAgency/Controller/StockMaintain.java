@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,6 +20,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import ascentAgency.Repo.StockRepo;
+import ascentAgency.entity.Production;
+import ascentAgency.entity.Stocks;
 import ascentAgency.service.BillGenrateService;
 
 @RestController
@@ -63,6 +67,43 @@ public class StockMaintain {
     public JsonNode c2323ChackFile(@PathVariable String value) throws IOException {
     
     return	billGenrateService.updateStockByBatchName(value);
+    }
+    
+//    --------------------------------------------------------------------------------------
+    @Autowired StockRepo stockRepo;
+//  this file method only chacking for database use
+    @GetMapping("/viewAllStock1")
+    public ObjectNode c2322ChackFile1() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode node = mapper.createObjectNode();
+
+        List<Stocks> stockList = stockRepo.findAll();
+
+        stockList.forEach(stock ->
+                node.put(stock.getItemName(), stock.getQuantity())
+        );
+
+        return node;
+    	 
+      
+    }
+    
+//  this file method only chacking for database use
+    @GetMapping("/allord1")
+    public ObjectNode c2321ChackFile1() throws IOException {
+   	 final ObjectMapper objectMapper = new ObjectMapper();
+  
+   	 
+       return billGenrateService.getAllProduction();
+   }
+   
+   
+    
+//    this file method only chacking for database use
+    @PutMapping("/updOrAdd1/{value}")
+    public String c2323ChackFile2(@PathVariable String value) throws IOException {
+    
+    return	billGenrateService.updateStockByBatchName1(value);
     }
     
 }

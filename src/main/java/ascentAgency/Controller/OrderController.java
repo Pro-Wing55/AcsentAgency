@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ascentAgency.Repo.Impl.BillGenrateRepoIMPL;
+import ascentAgency.entity.Purchase;
 import ascentAgency.service.BillGenrateService;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class OrderController  {
-	
+	@Autowired BillGenrateRepoIMPL billg;
 	@Autowired BillGenrateService billService;
 	
 @PostMapping("savebill") 
@@ -40,7 +42,8 @@ public List<String> saveAllbills(@RequestBody Map<String, String>  map) {
 @GetMapping("getBills")
 public JsonNode getAllbills() throws IOException { 
 	System.out.println("this is getAll method ");
-	return billService.getAllBills();
+//	return billService.getAllBills();
+	return billg.getAllBills1();
 }
    
 @GetMapping("getBillsById/{id}")
@@ -58,5 +61,17 @@ public List<Map<String, String>> getBillsByCustomerName(@PathVariable String nam
 }
 
 
+//-----------------puchaseBill controller-----------------------------
+@PostMapping("savePurchaseBill")
+   public Purchase savePurchaseBill(@RequestBody Purchase  map) {
+	
+	return billService.savePurchaseBill(map);
+}
+
+@GetMapping("getAllPurchaseBill")
+public List<Purchase> getAllPurchaseBill() {
+	
+	return billService.getAllPurchaseBill();
+}
     
 }
